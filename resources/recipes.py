@@ -35,7 +35,6 @@ class Recipes(MethodView):
 
             db.session.add(existingRecipe)
             db.session.commit()
-            ss = 1/0
         except SQLAlchemyError: 
             abort(500, { "message": "Recipe updation failed!" })
         
@@ -96,5 +95,5 @@ class RecipesList(MethodView):
                     "message": "Recipe creation failed!",
                     "required": "title, making_time, serves, ingredients, cost"
                     }
-        return response , 400
+        return response , 200
     
