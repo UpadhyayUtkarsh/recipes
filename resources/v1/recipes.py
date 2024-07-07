@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from models import RecipesModel
-from schemas import RecipeCreateSchema, RecipeUpdateSchema , RecipeResponseSchema , RecipesListResponseSchema , RecipeUpdateResponseSchema, RecipeCreateResponseSchema
+from resources.v1.schemas.schemas import RecipeCreateSchema, RecipeUpdateSchema , RecipeResponseSchema , RecipesListResponseSchema , RecipeUpdateResponseSchema, RecipeCreateResponseSchema
 
 blp = Blueprint("Recipes", "recipes", description="recipes")
 
@@ -36,7 +36,7 @@ class Recipes(MethodView):
             db.session.add(existingRecipe)
             db.session.commit()
         except SQLAlchemyError: 
-            abort(500, { "message": "Recipe updation failed!" })
+            abort(200, { "message": "Recipe updation failed!" })
         
 
         return {"message": "Recipe successfully updated!", "recipe": [existingRecipe]}
@@ -50,7 +50,7 @@ class Recipes(MethodView):
             db.session.delete(item)
             db.session.commit()
         except SQLAlchemyError: 
-            abort(500, { "message": "Recipe deletion failed!" })
+            abort(200, { "message": "Recipe deletion failed!" })
         
         return {  "message": "Recipe successfully removed!" }
     
@@ -59,7 +59,7 @@ class Recipes(MethodView):
         response = {
                      "message": error.data.get('messages'),
                     }
-        return response , 400
+        return response , 200
 
 
 @blp.route("/recipes")
@@ -81,7 +81,7 @@ class RecipesList(MethodView):
             abort(422, err)
 
         except SQLAlchemyError:
-            abort(500, {
+            abort(200, {
                     "message": "Recipe creation failed!",
                     "required": "title, making_time, serves, ingredients, cost"
                     })
