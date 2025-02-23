@@ -24,8 +24,6 @@ class Recipes(MethodView):
         try:
             existingRecipe = RecipesModel.query.get(id)
 
-            if existingRecipe == None: 
-                    abort(400, messages =  "No recipe found"  )
 
             existingRecipe.title = recipe["title"]
             existingRecipe.making_time = recipe["making_time"]
